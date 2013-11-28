@@ -3,16 +3,23 @@
 <head>
 <meta charset=utf-8 />
 <title>Inject JS Console</title>
-<meta id="meta" name="viewport" content="width=device-width; height=device-height; user-scalable=no; initial-scale=1.0" />
+<meta id="meta" name="viewport" content="width=device-width, height=device-height, user-scalable=no, initial-scale=1.0" />
 <style>* { font-family: sans-serif; }</style>
-<script>
-if (!window.location.search) {
-  window.location = "?javascript:(function(s){s.src='http://jsconsole.com/inject.js';document.body.appendChild(s)})(document.createElement('script'))";
-}
-</script>
 </head>
 <body>
-<p>This page should redirect right away to the correct url, once it does, bookmarket it on your mobile phone, then remove the <em>http://jsconsole.com/inject.html?</em> (including the question mark) part to get the bookmarklet to work.</p>
-<p>Alternatively, to inject JS Console, bookmarket this: <a href="javascript:(function(s){s.src='http://jsconsole.com/inject.js';document.body.appendChild(s)})(document.createElement('script'))">JS Console</a> and sync to your phone.</p>
+<p>This page should redirect right away to the correct url, once it does, bookmarket it on your mobile phone, then remove the <em id="prefix">prefix</em> (including the question mark) part to get the bookmarklet to work.</p>
+<p>Alternatively, to inject JS Console, bookmarket this: <a id="console" href="#">JS Console</a> and sync to your phone.</p>
+<p>To inject a remote connection into an application, add the listener id to the current url and reload the page, then use this <a id="remote" href="#">bookmark</a>.</p>
+<script>
+var prefix = window.location.protocol + '//' + window.location.hostname;
+var console = "javascript:(function(s){s.src='" + prefix + "/inject.js';document.body.appendChild(s)})(document.createElement('script'))";
+document.getElementById('console').href = console;
+if (!window.location.search) {
+	window.location = window.location + '?' + console;
+} else {
+	var remote = "javascript:(function(s){s.src='" + prefix + "/remote.js" + window.location.search + "';document.body.appendChild(s)})(document.createElement('script'))";
+	document.getElementById('remote').href = remote;
+}
+</script>
 </body>
 </html>
